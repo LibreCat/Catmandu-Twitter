@@ -8,7 +8,7 @@ my $x = Catmandu::Importer::Twitter->new(query => '#elag2013');
 
 $x->each(sub {  
 	my $obj = shift; 
-	print 
+	print $obj->{text} , "\n";
 });
 
 or lazier via the command line
