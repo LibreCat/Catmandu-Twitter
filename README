@@ -1,4 +1,8 @@
-Twitter importer Catmandu style.
+Twitter to Atom converter:
+
+ $ twitter2atom.pl '#elag2013' > feed.xml
+
+Twitter importer Catmandu style:
 
 Usage:
 
