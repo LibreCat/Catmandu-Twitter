@@ -24,7 +24,7 @@ $out->add_many($in->map(sub {
     $ret->{content}{body} =~ s{(@(\w+))}{<a href="https://twitter.com/$2">$1</a>}g;
     $ret->{content}{body} =~ s{(#(\w+))}{sprintf('<a href="https://twitter.com/search?q=%s" title="%s">%s</a>',uri_escape($1),$1,$1)}eg;
     $ret->{link}[0]{href} = sprintf "http://twitter.com/%s/statuses/%s" , $obj->{from_user} , $obj->{id};
-    $ret->{published}     = strftime "%Y-%m-%dT%H:%M:%S", localtime( str2time($obj->{created_at}) );
+    $ret->{published}     = strftime "%Y-%m-%dT%H:%M:%SZ", gmtime( str2time($obj->{created_at}) );
     $ret->{updated}       = $ret->{published}; 
     $ret;
 }));

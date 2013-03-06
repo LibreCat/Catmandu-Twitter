@@ -6,7 +6,7 @@ use Moo;
 
 with 'Catmandu::Importer';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has query   => (is => 'ro', required => 1);
 has twitter => (is => 'ro', init_arg => undef , lazy => 1 , builder => '_build_twitter');

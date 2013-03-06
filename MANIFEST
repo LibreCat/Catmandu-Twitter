@@ -4,3 +4,7 @@ lib/Catmandu/Importer/Twitter.pm
 MANIFEST			This list of files
 README
 t/00-load.t
+Makefile.PL
+LICENSE
+META.yml
+META.json
