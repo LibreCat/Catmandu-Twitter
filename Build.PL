@@ -19,6 +19,8 @@ my $builder = Module::Build->new(
         'Catmandu' => '0.08',
         'Moo' => '0.009011',
         'Net::Twitter' => '4.00003',
+        'Date::Parse' => '2.30' ,
+        'URI::Escape' => '3.31' ,
     },
     add_to_cleanup => [qw(
         Catmandu-Twitter-*
