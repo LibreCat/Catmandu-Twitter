@@ -6,22 +6,35 @@ use Moo;
 
 with 'Catmandu::Importer';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
-has query   => (is => 'ro', required => 1);
-has twitter => (is => 'ro', init_arg => undef , lazy => 1 , builder => '_build_twitter');
+has query => ( is => 'ro', required => 1 );
+has twitter                       => ( is => 'r0' );
+has 'twitter_consumer_key'        => ( is => 'ro', required => 1 );
+has 'twitter_consumer_secret'     => ( is => 'ro', required => 1 );
+has 'twitter_access_token'        => ( is => 'ro', required => 1 );
+has 'twitter_access_token_secret' => ( is => 'ro', required => 1 );
 
-sub _build_twitter {
-    Net::Twitter->new();
-}
+before generator => sub {
+    my $self = shift;
+    $self->{twitter} = Net::Twitter->new(
+        traits              => [qw/API::RESTv1_1/],
+        consumer_key        => $self->twitter_consumer_key,
+        consumer_secret     => $self->twitter_consumer_secret,
+        access_token        => $self->twitter_access_token,
+        access_token_secret => $self->twitter_access_token_secret,
+    ) or die "$!";
+
+};
 
 sub generator {
     my ($self) = @_;
-    
+
     sub {
-        state $res = $self->twitter->search($self->query);
-        return unless @{$res->{results}};
-        return shift @{$res->{results}};
+        state $res = $self->{twitter}->search( $self->query );
+
+        return unless @{ $res->{statuses} };
+        return shift @{ $res->{statuses} };
     };
 }
 
