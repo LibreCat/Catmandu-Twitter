@@ -1,19 +1,19 @@
 package Catmandu::Importer::Twitter;
 
 use Catmandu::Sane;
-use Net::Twitter;
 use Moo;
+use Net::Twitter;
 
 with 'Catmandu::Importer';
 
 our $VERSION = '0.03';
 
-has query => ( is => 'ro', required => 1 );
-has twitter                       => ( is => 'r0' );
-has 'twitter_consumer_key'        => ( is => 'ro', required => 1 );
-has 'twitter_consumer_secret'     => ( is => 'ro', required => 1 );
-has 'twitter_access_token'        => ( is => 'ro', required => 1 );
-has 'twitter_access_token_secret' => ( is => 'ro', required => 1 );
+has query                       => ( is => 'ro', required => 1 );
+has twitter                     => ( is => 'ro' );
+has twitter_consumer_key        => ( is => 'ro', required => 1 );
+has twitter_consumer_secret     => ( is => 'ro', required => 1 );
+has twitter_access_token        => ( is => 'ro', required => 1 );
+has twitter_access_token_secret => ( is => 'ro', required => 1 );
 
 before generator => sub {
     my $self = shift;
@@ -46,7 +46,13 @@ Catmandu::Importer::Twitter - Package that imports Twitter feeds
 
     use Catmandu::Importer::Twitter;
 
-    my $importer = Catmandu::Importer::Twitter->new(query => '#elag2013' );
+    my $importer = Catmandu::Importer::Twitter->new(
+                        consumer_key => '<your key>' ,
+                        consumer_secret => '<your secret>' ,
+                        access_token => '<your token>' ,
+                        access_token_secret => '<your token secret>' ,    
+                        query => '#elag2013' 
+                    );
 
     my $n = $importer->each(sub {
         my $hashref = $_[0];

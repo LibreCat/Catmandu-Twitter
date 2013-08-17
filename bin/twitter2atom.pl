@@ -1,23 +1,41 @@
 #!/usr/bin/env perl
-
-use lib "../lib";
+$|++;
 
 use Catmandu::Importer::Twitter;
 use Catmandu::Exporter::Atom;
 use Config::Any::JSON;
 use Date::Parse;
 use URI::Escape;
-use Encode;
 use POSIX qw(strftime);
+use Getopt::Long;
+
+binmode(STDOUT, ":utf8");
 
 # get twitter keys from config file
 my $conf_file = "twitter.json";
 my $config    = undef;
 
+GetOptions("c=s" => \$conf_file);
+
 my $query = shift;
 
-die "usage: $0 query" unless $query;
-die "no twitter config file 'twitter.json' found" unless ( -e $conf_file );
+unless ($query && -f $conf_file) {
+    print STDERR <<EOF;
+usage: $0 [-c config] query
+
+where 'config' is a JSON file like:
+
+{
+ "twitter_consumer_key": "XXX",
+ "twitter_consumer_secret": "XXX",
+ "twitter_access_token": "XXX",
+ "twitter_access_token_secret": "XXX"
+}
+
+The default config file is: $conf_file
+EOF
+    exit(2);
+}
 
 $config = Config::Any::JSON->load($conf_file);
 
@@ -33,7 +51,7 @@ my $out = Catmandu::Exporter::Atom->new(
             type => 'text/html',
             rel  => 'alternate',
             href =>
-              sprintf( 'https://twitter.com/search?q=%s', uri_escape($query) )
+              sprintf( 'https://twitter.com/search?q=%s', uri_escape_utf8($query) )
         }
     ]
 );
